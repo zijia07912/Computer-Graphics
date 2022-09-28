@@ -1,0 +1,146 @@
+<!-- name: Zi Jia Tan -->
+<!DOCTYPE html>
+<html>
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+attribute vec4 vNormal;
+varying vec3 N, L, E;
+uniform vec4 lightPosition; 
+uniform mat4 mvMatrix; 
+uniform mat4 projMatrix; 
+
+void main()
+{   
+    
+    vec3 eye = vec3(0.0, 0.0, 0.0);
+    vec3 position = (mvMatrix * vPosition).xyz;
+    vec3 light = (mvMatrix * lightPosition).xyz;
+    L = normalize(light - position);
+    E = normalize(eye - position);
+    N = normalize( (mvMatrix * vNormal).xyz);
+                
+    gl_Position = projMatrix * mvMatrix * vPosition;
+
+}
+</script>
+
+<script id="normal-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+varying vec4 fColor;
+
+uniform mat4 mvMatrix; 
+uniform mat4 projMatrix; 
+
+void main()
+{
+    fColor = vec4(1.0, 1.0, 0.0, 1.0);
+    gl_Position = projMatrix * mvMatrix * vPosition;
+}
+</script>	
+<script id="fragment-shader2" type="x-shader/x-fragment">
+
+    precision mediump float;
+    
+    varying vec4 fColor;
+    
+    void
+    main()
+    {
+        gl_FragColor = fColor;
+    }
+</script>
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+uniform vec4 ambientProduct;
+uniform vec4 diffuseProduct;
+uniform vec4 specularProduct;
+
+uniform float shininess;
+varying vec3 N, L, E;
+
+void main()
+{    
+    vec4 fColor;
+    
+    vec3 H = normalize( L + E );
+    vec4 ambient = ambientProduct;
+
+    float Kd = max( dot(L, N), 0.0 );
+    vec4  diffuse = Kd*diffuseProduct;
+
+    float Ks = pow( max(dot(N, H), 0.0), shininess );
+    vec4  specular = Ks * specularProduct;
+    
+    if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
+
+    fColor = ambient + diffuse + specular;
+    
+    fColor.a = 1.0;
+
+    gl_FragColor = fColor;
+    
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="Tan_geometry.js"></script>
+<script type="text/javascript" src="Tan_hw3.js"></script>
+<body>
+    <div style="font-family:verdana";>
+        <h1> CSE 470 HW#3: Lights, Camera, Action!</h1>
+        <strong>Author: </strong>ZI JIA TAN
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp        
+        <strong>Date: </strong>4/7/2022
+    
+    </div>
+    <br>
+<canvas id="gl-canvas" width="1000" height="1000">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<div>
+    <button id= "cylinder">Cylinder Object</button>
+    <button id= "crock">Chalice Object</button>
+    <button id= "chrome">Chrome Material</button>
+    <button id= "turqoise">Turqoise Material</button>
+    <button id= "whiteLight">White Light</button>
+    <button id= "redLight">Red Light</button>
+    <br>
+    <br>
+    <strong>Can be toggle: </strong>
+    <button id= "eyelight">Light at eye position</button>
+    <br>
+    <br>
+    <strong>Extra Credit: </strong>
+    <button id= "normal">View Normal</button>
+</div>
+<br>
+<div>
+    <span class="px-4">Shininess: 1</span>
+    <input id="shininess" type="range" min="1" max="100" value="20"/>100
+    <br>
+    <span class="px-4">FoV: 10</span>
+    <input id="fov" type="range" min="10" max="100" value="20"/>100 degree
+</div>
+</body>
+</br>
+<strong>Description: </strong></br>This is an interactive canvas that object on it can be move by using mouse movement. 
+Click on the canvas and move around! 
+</br>
+There are 2 shapes, the default is cylinder and the second one is a crock. Press the button above to switch.
+There are also 2 materials, the default is chrome and the second one is a turqoise. Press the button above to switch.
+There are also 2 lights, the default is white and the second one is a red. Press the button above to switch.
+There are 2 buttons that can be toggle, one is to move the light to eye position, next is to view the normal lines(extra credit).
+There are 2 sliders above. one is to set the shininess of the light, and the other one is to move the perspective of user.
+<br/>
+<strong>Resources:</strong></br>
+Professor's sample code in class
+</br>
+<a href="https://webglfundamentals.org/webgl/lessons/webgl-3d-lighting-point.html">Modify lights</a>
+</br>
+<a href="https://www.youtube.com/watch?v=dkF7edNwt3M&t=20s">Second shape idea</a>
+</br>
+</html>

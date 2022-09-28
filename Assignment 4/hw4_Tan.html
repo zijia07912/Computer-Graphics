@@ -1,0 +1,171 @@
+<!-- Zi Jia Tan -->
+<html>
+
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute  vec4 vPosition;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform vec4 color;
+attribute  vec2 vTexCoord;
+varying vec2 fTexCoord;
+varying vec4 fcolor;
+
+void main() 
+{
+	fcolor = color;
+  fTexCoord = vTexCoord;
+  gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+} 
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+varying vec4 fcolor;
+varying  vec2 fTexCoord;
+
+uniform sampler2D Tex0;
+uniform sampler2D Tex1;
+void main()
+{
+	//gl_FragColor = fcolor;
+  gl_FragColor = fcolor*(texture2D(Tex0, fTexCoord)*texture2D(Tex1, fTexCoord));
+  //gl_FragColor = fcolor*(texture2D(Tex0, fTexCoord));
+}
+</script>
+
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="hw4_Tan.js"></script>
+
+</head>
+<body>
+  <div style="font-family:verdana";>
+    <h1> CSE 470 HW#4: Dancer!</h1>
+    <strong>Author: </strong>ZI JIA TAN
+    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp        
+    <strong>Date: </strong>4/22/2022
+
+</div>
+<strong>Description: </strong></br>This is an interactive canvas that object on it can be move by using mouse movement. 
+Click on the canvas and move around! 
+
+<br/>
+<strong>Resources:</strong></br>
+Professor's sample code in class
+</br>
+<canvas id="gl-canvas" width="1000"" height="1000">
+  Oops ... your browser doesn't support the HTML5 canvas element
+  </canvas>
+
+ <table>
+ <tr>
+ <td>
+<div id="slider0">
+torso angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+ 
+<div id="slider10">
+head2 angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+
+<div id="slider1">
+head1 angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+
+ 
+<div id="slider2">
+left upper arm angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+ 
+<div id="slider3">
+left lower arm angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+
+</td>
+<td>
+
+<div id="slider4">
+right upper arm angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+<div id="slider5">
+right lower arm angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+ 
+<div id="slider6">
+left upper leg angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+<div id="slider7">
+left lower leg angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+<div id="slider8">
+right upper leg angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+
+<div id="slider9">
+right lower leg angle -180 <input id="slide" type="range"
+ min="-180" max="180" step="10" value="0"
+  />
+ 180
+</div><br/>
+</td>
+</tr>
+</table>
+
+
+<div style="font-size: 50px;">
+  <strong>Music:</strong>
+
+  <audio controls autoplay>
+      <source id="music" src="audio.mp3" type="audio/mp3">
+  </audio>
+</div>
+
+</body>
+</html>

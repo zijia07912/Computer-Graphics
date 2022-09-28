@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>E X P L O D E !</title>
+
+
+<!-- Vertex Shader -->
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+// This is GLSL code (not HTML5)
+
+attribute vec4 vPosition;
+//attribute vec4 vPosition2;
+
+
+//HW470: uniforms to control explosion and color change
+uniform float theta;
+
+//incoming color attribute and varying for fragment shader
+attribute vec3 vColor;
+varying vec4 color; 
+
+void
+main()
+{
+	// HW470: explode the geometry x,y coords and set z and w
+	// Change the code below.
+
+	gl_Position.x = vPosition.x + theta*vPosition.z;
+	gl_Position.y = vPosition.y + theta*vPosition.w;
+    gl_Position.z = 0.0;
+    gl_Position.w = 1.0;
+	
+	//HW470: create a parameter to vary the color based on the explodeFactor
+	 
+	
+	//HW470: Modify color with factor and clip to max valid value 
+	float red = vColor.r;
+	
+	float green = vColor.g;
+	
+	float blue = vColor.b;
+
+    //set the varying color for the fragment shader
+	red = red + abs(vPosition.z)* theta + abs(vPosition.w) * theta; 
+	green = green + abs(vPosition.z)* theta + abs(vPosition.w) * theta;
+	blue = blue + abs(vPosition.z) * theta + abs(vPosition.w) * theta;
+    color = vec4(red, green, blue, 1.0);
+}
+</script>
+
+<!-- Fragment Shader -->
+<!-- (no change to this) -->
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+// This is GLSL code (not HTML5)
+
+precision mediump float;
+
+// Color coming in
+varying vec4 color;
+
+
+void
+main()
+{
+   //pass color to fragment shader
+    gl_FragColor = color;
+}
+</script>
+
+<!-- JS Utility codes and codes for this program -->
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="explode.js"></script>
+</head>   
+
+<body>
+<!--HW470: Add text to communicate what program does -->
+<div style="font-family:verdana";>
+<h1> CSE 470 HW#1: Explode!</h1>
+
+<strong>Author: </strong>ZI JIA TAN
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp        
+<strong>Date: </strong>1/24/2022</br>
+
+</br>
+<strong>Description: </strong></br>This program shows hexagram with a inverted equilateral triangle on the middle, 
+the animation part would be the outer part of triangles. The colors are using rgb values that are randomised using Math.random(), 
+thus the color changes everytime the page is refreshed
+</br>
+</br>
+<strong>How did you map color from the initial (r,g,b) to white?</strong></br>
+I map the color from the initial color to white by increasing the (r,g,b) value according to the vPosition of the vertices. 
+As the vPosition increases, the (r,g,b) value increases towards 1 and thus turning into white 
+</br> 
+</br>
+<strong>Resources:</strong></br>
+<a href="https://www.quora.com/How-can-you-find-the-coordinates-in-a-hexagon">Coordinates of a hexagon</a>
+<br>Professor's base code
+</br>
+Professor's sample code in class
+</br>
+</br> 
+</br>
+</div>
+
+<canvas id="gl-canvas" width="512" height="512" style="border:2px solid #000000;">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+</body>
+</html>

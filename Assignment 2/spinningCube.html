@@ -1,0 +1,69 @@
+<html>
+<title>Spinning Cubes</title>
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute  vec4 vPosition;
+attribute  vec4 vColor;
+varying vec4 fColor;
+uniform mat4 uModelView;
+void main() 
+{
+    fColor = vColor;   
+    gl_Position = uModelView * vPosition;
+} 
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+   
+varying vec4 fColor;
+
+void
+main()
+{
+    gl_FragColor = fColor;
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="createCube.js"></script>
+<script type="text/javascript" src="spinningCube.js"></script>
+
+
+<body>
+<div style="font-family:verdana";>
+    <h1> CSE 470 HW#2: Spinning Cubes</h1>
+    <strong>Author: </strong>ZI JIA TAN
+    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp        
+    <strong>Date: </strong>2/20/2022
+
+</br>
+
+</br>
+    <canvas id="gl-canvas" width="512"" height="512">
+        Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
+<br/>
+
+
+</br>
+<button id= "xButton">Rotate X-axis</button>
+<button id= "yButton">Rotate Y-axis</button>
+<button id= "zButton">Rotate Z-axis</button>
+<button id= "rButton">Rotate Random-axis</button>
+<div>
+    scaling 10% <input id="slider" type="range"
+     min="10" max="100" step="5" value="10" />100%
+</div>
+</br>
+<strong>Description: </strong></br>This is an interactive canvas that draws cubes by clicking on the canvas. Click on the gray canvas for visuals! 
+You can change the axis of rotation by clicking the buttons above.
+The slider is for scaling purposes and the cube is default at 0.1 (10%) of the original size. 
+<br/>
+<strong>Resources:</strong></br>
+Professor's sample code in class
+</br>
+</body>
+</html>
